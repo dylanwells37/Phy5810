@@ -19,4 +19,4 @@ extern double milne_rule (int num_points, double x_min,
                             double x_max, double (*integrand) (double x));
 
 extern double gsl_integration (int num_points, double x_min,
-                            double x_max, double (*integrand) (double x));
+                            double x_max, double (*integrand) (double x, void *));

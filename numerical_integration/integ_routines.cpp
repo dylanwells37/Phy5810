@@ -13,9 +13,10 @@
 // include files
 #include <cmath>
 #include "integ_routines.h"   // integration routine prototypes 
+#include <gsl/gsl_integration.h>
 
 double simpsons_rule (int num_points, double x_min, 
-                    double x_max, double (*integrand) (double x) ) {
+                      double x_max, double (*integrand) (double x) ) {
     /* Calcualte the simpson's rule estimation for a given integrand,
     num_points, and range */
 
@@ -39,7 +40,7 @@ double simpsons_rule (int num_points, double x_min,
 }
 
 double milne_rule (int num_points, double x_min, 
-                    double x_max, double (*integrand) (double x) ) {
+                   double x_max, double (*integrand) (double x) ) {
     /* Calcualte the milne rule estimation for a given integrand,
     num_points, and range */
     
@@ -59,7 +60,7 @@ double milne_rule (int num_points, double x_min,
     // add odd contributions counted twice
     for (int n = 5; n < num_points; n+=4){
         double x = x_min + h * (n - 1);
-        sum += (48.0 / 45.0) * h * integrand(x);
+        sum += (28.0 / 45.0) * h * integrand(x);
     }
 
     // add endpoint contribution
@@ -68,6 +69,21 @@ double milne_rule (int num_points, double x_min,
     return sum;
 }
 
-double gsl_integration (){
-    
+double gsl_integration (int num_points, double x_min, 
+                        double x_max, double (*gsl_integrand) (double x, void *) ){
+    /* Calcualte the gsl integration estimation for a given integrand,
+    num_points, and range */
+
+    gsl_integration_workspace * w = gsl_integration_workspace_alloc (num_points);
+    double result, error;
+
+    gsl_function F;
+
+    F.function = gsl_integrand;
+
+    gsl_integration_qags (&F, x_min, x_max, 0, 1e-7, num_points, w, &result, &error);
+
+    gsl_integration_workspace_free (w);
+
+    return result;
 }
