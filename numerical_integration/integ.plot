@@ -18,10 +18,14 @@ fit [0:2] f3(x) "milne.dat" using 1:3 via a3,b3
 f4(x) = a4*x + b4
 fit [0.0:2] f4(x) "simpson.dat" using 1:3 via a4,b4
 
+f5(x) = a5*x + b5
+fit [4:8.5] f5(x) "milne.dat" using 1:3 via a5,b5
+
 fit_title = sprintf("Milne, %-+4.1f*x %-+4.1f",a,b)
 fit_title2 = sprintf("Simpson, %-+4.1f*x %-+4.1f",a2,b2)
 fit_title3 = sprintf("Milne, %-+4.1f*x %-+4.1f",a3,b3)
 fit_title4 = sprintf("Simpson, %-+4.1f*x %-+4.1f",a4,b4)
+fit_title5 = sprintf("Milne, %-+4.1f*x %-+4.1f",a5,b5)
 
 
 
@@ -32,7 +36,8 @@ plot "milne.dat" using 1:3 with lines title "Milne", \
     f(x) title fit_title, \
     f2(x) title fit_title2, \
     f3(x) title fit_title3, \
-    f4(x) title fit_title4
+    f4(x) title fit_title4, \
+    f5(x) title fit_title5
 
 # save to postscript
 set term postscript eps color
